@@ -1,9 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dpdcsyvbm48qb"]
+[gd_scene load_steps=8 format=3 uid="uid://dpdcsyvbm48qb"]
 
-[ext_resource type="Script" path="res://main.gd" id="1_3oewu"]
-[ext_resource type="Texture2D" path="res://tilesheet_complete.png" id="1_6lts0"]
-[ext_resource type="PackedScene" path="res://character.tscn" id="3_3b2in"]
-[ext_resource type="PackedScene" path="res://player_detector.tscn" id="4_l1pub"]
+[ext_resource type="Script" path="res://Levels/main.gd" id="1_3oewu"]
+[ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="1_6lts0"]
+[ext_resource type="PackedScene" uid="uid://cq3c2h875hxmb" path="res://character.tscn" id="3_3b2in"]
+[ext_resource type="PackedScene" uid="uid://bf78h4v02cr5o" path="res://Rotation/rotation_grid.tscn" id="4_0q15b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ldaek"]
 texture = ExtResource("1_6lts0")
@@ -831,14 +831,6 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_ldaek")
 sources/1 = SubResource("TileSetScenesCollectionSource_obuxs")
 
-[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_lp860"]
-scenes/1/scene = ExtResource("4_l1pub")
-
-[sub_resource type="TileSet" id="TileSet_uauod"]
-tile_size = Vector2i(64, 64)
-physics_layer_0/collision_layer = 1
-sources/1 = SubResource("TileSetScenesCollectionSource_lp860")
-
 [node name="Main" type="Node2D"]
 script = ExtResource("1_3oewu")
 
@@ -846,18 +838,23 @@ script = ExtResource("1_3oewu")
 tile_set = SubResource("TileSet_771ys")
 format = 2
 layer_0/name = "World"
-layer_0/tile_data = PackedInt32Array(131075, 524288, 2, 131073, 524288, 1, 262147, 262144, 1, 262145, 196608, 0)
 
-[node name="Interactible" type="TileMap" parent="GameWorld"]
-tile_set = SubResource("TileSet_uauod")
-format = 2
-layer_0/tile_data = PackedInt32Array(196610, 1, 65536)
+[node name="RotationGrid" parent="GameWorld" instance=ExtResource("4_0q15b")]
+layer_0/tile_data = PackedInt32Array(131073, 589824, 3, 131075, 655360, 3, 262145, 720896, 3, 262147, 655360, 2)
+tile0_loc = Vector2(1, 2)
+tile1_loc = Vector2(3, 2)
+tile2_loc = Vector2(3, 4)
+tile3_loc = Vector2(1, 4)
+
+[node name="RotationGrid2" parent="GameWorld" instance=ExtResource("4_0q15b")]
+layer_0/tile_data = PackedInt32Array(131077, 589824, 4, 131079, 655360, 4, 262149, 720896, 4, 262151, 655360, 5)
+tile0_loc = Vector2(5, 2)
+tile1_loc = Vector2(7, 2)
+tile2_loc = Vector2(7, 4)
+tile3_loc = Vector2(5, 4)
 
 [node name="Character" parent="." instance=ExtResource("3_3b2in")]
 position = Vector2(160, 97)
 
-[connection signal="body_entered" from="GameWorld/Interactible/PlayerDetector" to="GameWorld/Interactible/PlayerDetector" method="_on_body_entered"]
-[connection signal="area_entered" from="Character/Area2D" to="." method="_on_area_2d_area_entered"]
-[connection signal="area_exited" from="Character/Area2D" to="." method="_on_area_2d_area_exited"]
-
-[editable path="Character"]
+[editable path="GameWorld/RotationGrid"]
+[editable path="GameWorld/RotationGrid2"]

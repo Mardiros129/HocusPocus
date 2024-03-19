@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cq3c2h875hxmb"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_02pl8"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="1_dm1bt"]
+[ext_resource type="Texture2D" uid="uid://b70ye174htwia" path="res://icon.svg" id="1_dm1bt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vuspk"]
 size = Vector2(43, 43)
