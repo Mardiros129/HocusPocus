@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dpdcsyvbm48qb"]
+[gd_scene load_steps=10 format=3 uid="uid://dpdcsyvbm48qb"]
 
 [ext_resource type="Script" path="res://Levels/main.gd" id="1_3oewu"]
 [ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="1_6lts0"]
@@ -831,6 +831,12 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_ldaek")
 sources/1 = SubResource("TileSetScenesCollectionSource_obuxs")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dcs8"]
+size = Vector2(171, 168)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7kj7y"]
+size = Vector2(168.5, 156.5)
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_3oewu")
 
@@ -846,6 +852,10 @@ tile1_loc = Vector2(3, 2)
 tile2_loc = Vector2(3, 4)
 tile3_loc = Vector2(1, 4)
 
+[node name="CollisionShape2D" parent="GameWorld/RotationGrid/PlayerDetectionArea" index="0"]
+position = Vector2(162.5, 241)
+shape = SubResource("RectangleShape2D_7dcs8")
+
 [node name="RotationGrid2" parent="GameWorld" instance=ExtResource("4_0q15b")]
 layer_0/tile_data = PackedInt32Array(131077, 589824, 4, 131079, 655360, 4, 262149, 720896, 4, 262151, 655360, 5)
 tile0_loc = Vector2(5, 2)
@@ -853,8 +863,12 @@ tile1_loc = Vector2(7, 2)
 tile2_loc = Vector2(7, 4)
 tile3_loc = Vector2(5, 4)
 
+[node name="CollisionShape2D" parent="GameWorld/RotationGrid2/PlayerDetectionArea" index="0"]
+position = Vector2(420.75, 245.75)
+shape = SubResource("RectangleShape2D_7kj7y")
+
 [node name="Character" parent="." instance=ExtResource("3_3b2in")]
-position = Vector2(160, 97)
+position = Vector2(162, 68)
 
 [editable path="GameWorld/RotationGrid"]
 [editable path="GameWorld/RotationGrid2"]
