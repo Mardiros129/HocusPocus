@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dpdcsyvbm48qb"]
+[gd_scene load_steps=11 format=3 uid="uid://dpdcsyvbm48qb"]
 
 [ext_resource type="Script" path="res://Levels/main.gd" id="1_3oewu"]
 [ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="1_6lts0"]
 [ext_resource type="PackedScene" uid="uid://cq3c2h875hxmb" path="res://character.tscn" id="3_3b2in"]
+[ext_resource type="PackedScene" uid="uid://c67uahkhduf2k" path="res://Rotation/player_detector.tscn" id="3_30mxe"]
 [ext_resource type="PackedScene" uid="uid://bf78h4v02cr5o" path="res://Rotation/rotation_grid.tscn" id="4_0q15b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ldaek"]
@@ -822,20 +823,20 @@ texture_region_size = Vector2i(64, 64)
 4:1/0/physics_layer_0/angular_velocity = 0.0
 4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, 32, -32, 32)
 
-[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_obuxs"]
-scenes/1/scene = ExtResource("3_3b2in")
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_3pb23"]
+scenes/1/scene = ExtResource("3_30mxe")
 
 [sub_resource type="TileSet" id="TileSet_771ys"]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_ldaek")
-sources/1 = SubResource("TileSetScenesCollectionSource_obuxs")
+sources/2 = SubResource("TileSetScenesCollectionSource_3pb23")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dcs8"]
-size = Vector2(171, 168)
+size = Vector2(230, 231)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7kj7y"]
-size = Vector2(168.5, 156.5)
+size = Vector2(108.25, 103.75)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_3oewu")
@@ -844,27 +845,27 @@ script = ExtResource("1_3oewu")
 tile_set = SubResource("TileSet_771ys")
 format = 2
 layer_0/name = "World"
+layer_1/name = "Rotator"
+layer_1/z_index = -1
+layer_1/tile_data = PackedInt32Array()
+layer_2/name = "Quadrant"
+layer_2/z_index = -1
+layer_2/tile_data = PackedInt32Array()
 
 [node name="RotationGrid" parent="GameWorld" instance=ExtResource("4_0q15b")]
-layer_0/tile_data = PackedInt32Array(131073, 589824, 3, 131075, 655360, 3, 262145, 720896, 3, 262147, 655360, 2)
-tile0_loc = Vector2(1, 2)
-tile1_loc = Vector2(3, 2)
-tile2_loc = Vector2(3, 4)
-tile3_loc = Vector2(1, 4)
+layer_0/tile_data = PackedInt32Array(131074, 655360, 3, 196610, 655360, 2, 196609, 720896, 3, 131073, 589824, 2, 131075, 851968, 1, 131076, 851968, 2, 196611, 851968, 2, 196612, 851968, 1, 262147, 262144, 1, 262148, 262144, 1, 327684, 262144, 1, 327683, 262144, 1, 262145, 655360, 4, 262146, 720896, 4, 327682, 720896, 5, 327681, 589824, 5)
+layer_1/tile_data = PackedInt32Array(131073, 786432, 11, 131074, 786432, 11, 196610, 786432, 11, 196609, 786432, 11, 131075, 851968, 11, 131076, 851968, 11, 196612, 851968, 11, 196611, 851968, 11, 262147, 917504, 11, 262148, 917504, 11, 327684, 917504, 11, 327683, 917504, 11, 262145, 983040, 11, 327682, 983040, 11, 327681, 983040, 11, 262146, 983040, 11)
 
 [node name="CollisionShape2D" parent="GameWorld/RotationGrid/PlayerDetectionArea" index="0"]
-position = Vector2(162.5, 241)
+position = Vector2(192, 256.5)
 shape = SubResource("RectangleShape2D_7dcs8")
 
 [node name="RotationGrid2" parent="GameWorld" instance=ExtResource("4_0q15b")]
-layer_0/tile_data = PackedInt32Array(131077, 589824, 4, 131079, 655360, 4, 262149, 720896, 4, 262151, 655360, 5)
-tile0_loc = Vector2(5, 2)
-tile1_loc = Vector2(7, 2)
-tile2_loc = Vector2(7, 4)
-tile3_loc = Vector2(5, 4)
+layer_0/tile_data = PackedInt32Array(131077, 589824, 4, 131078, 655360, 4, 196614, 655360, 5, 196613, 720896, 4)
+layer_1/tile_data = PackedInt32Array(131077, 786432, 11, 131078, 851968, 11, 196614, 917504, 11, 196613, 983040, 11)
 
 [node name="CollisionShape2D" parent="GameWorld/RotationGrid2/PlayerDetectionArea" index="0"]
-position = Vector2(420.75, 245.75)
+position = Vector2(384.875, 194.125)
 shape = SubResource("RectangleShape2D_7kj7y")
 
 [node name="Character" parent="." instance=ExtResource("3_3b2in")]

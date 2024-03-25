@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://c67uahkhduf2k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bwa0h"]
-size = Vector2(189.625, 189)
+size = Vector2(57.2031, 59.375)
 
 [node name="PlayerDetector" type="Area2D"]
 
