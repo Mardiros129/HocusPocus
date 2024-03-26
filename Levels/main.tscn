@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://dpdcsyvbm48qb"]
+[gd_scene load_steps=13 format=3 uid="uid://dpdcsyvbm48qb"]
 
 [ext_resource type="Script" path="res://Levels/main.gd" id="1_3oewu"]
 [ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="1_6lts0"]
 [ext_resource type="PackedScene" uid="uid://cq3c2h875hxmb" path="res://character.tscn" id="3_3b2in"]
-[ext_resource type="PackedScene" uid="uid://bf78h4v02cr5o" path="res://Rotation/rotation_grid.tscn" id="4_0q15b"]
 [ext_resource type="Script" path="res://Levels/GameWorld.gd" id="4_p05uu"]
+[ext_resource type="PackedScene" uid="uid://cxu8nwf2krlkw" path="res://Rotation/rotator.tscn" id="5_3et3l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ldaek"]
 texture = ExtResource("1_6lts0")
@@ -584,7 +584,6 @@ texture_region_size = Vector2i(64, 64)
 9:8/0 = 0
 9:8/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 9:8/0/physics_layer_0/angular_velocity = 0.0
-9:8/0/custom_data_0 = true
 10:8/0 = 0
 10:8/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 10:8/0/physics_layer_0/angular_velocity = 0.0
@@ -795,12 +794,15 @@ texture_region_size = Vector2i(64, 64)
 13:11/0 = 0
 13:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 13:11/0/physics_layer_0/angular_velocity = 0.0
+13:11/0/custom_data_0 = 1
 14:11/0 = 0
 14:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 14:11/0/physics_layer_0/angular_velocity = 0.0
+14:11/0/custom_data_0 = 2
 15:11/0 = 0
 15:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 15:11/0/physics_layer_0/angular_velocity = 0.0
+15:11/0/custom_data_0 = 3
 16:11/0 = 0
 16:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 16:11/0/physics_layer_0/angular_velocity = 0.0
@@ -830,16 +832,22 @@ scenes/3/scene = ExtResource("3_3b2in")
 [sub_resource type="TileSet" id="TileSet_771ys"]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
-custom_data_layer_0/name = "Player"
-custom_data_layer_0/type = 1
+custom_data_layer_0/name = "Quadrant"
+custom_data_layer_0/type = 2
 sources/0 = SubResource("TileSetAtlasSource_ldaek")
 sources/1 = SubResource("TileSetScenesCollectionSource_wc6m3")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dcs8"]
-size = Vector2(230, 231)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d47c5"]
+size = Vector2(164, 108)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7kj7y"]
-size = Vector2(108.25, 103.75)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3wlkb"]
+size = Vector2(234.5, 231.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ri211"]
+size = Vector2(99, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_updh1"]
+size = Vector2(357.576, 359.415)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_3oewu")
@@ -847,26 +855,63 @@ script = ExtResource("1_3oewu")
 [node name="GameWorld" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_771ys")
 format = 2
-layer_0/name = "World"
-layer_0/tile_data = PackedInt32Array(65540, 1, 196608)
+layer_0/name = "Movable"
+layer_0/z_index = 1
+layer_0/tile_data = PackedInt32Array(131078, 720896, 7, 262147, 262144, 1, 262148, 262144, 1, 327684, 262144, 1, 327683, 262144, 1, 196611, 851968, 2, 131076, 851968, 2, 196612, 851968, 1, 131075, 851968, 1, 131073, 589824, 2, 131074, 655360, 3, 196609, 720896, 3, 196610, 655360, 2, 262145, 655360, 4, 262146, 720896, 4, 327681, 589824, 5, 327682, 720896, 5, 327689, 589824, 8, 262155, 1048576, 8, 262157, 1048576, 8, 327693, 1048576, 8, 393229, 1048576, 8, 393228, 1048576, 8, 393227, 1048576, 8, 196621, 1048576, 8, 196620, 1048576, 8, 196619, 1048576, 8, 131083, 1048576, 8, 65547, 1048576, 8, 65548, 1048576, 8, 65549, 1048576, 8, 65550, 1048576, 8, 196622, 1048576, 8, 196624, 1048576, 8, 65552, 1048576, 8, 262158, 1048576, 8, 262159, 1048576, 8, 262160, 1048576, 8, 327696, 1048576, 8, 393232, 1048576, 8, 393230, 1048576, 8, 327695, 1376256, 9, 131084, 1310720, 9)
+layer_1/name = "Characters"
+layer_1/z_index = 1
+layer_1/tile_data = PackedInt32Array(65541, 1, 196608)
+layer_2/name = "Static"
+layer_2/z_index = 1
+layer_2/tile_data = PackedInt32Array()
+layer_3/name = "Rotator1"
+layer_3/tile_data = PackedInt32Array(131078, 786432, 11, 131080, 851968, 11, 262152, 917504, 11, 262150, 983040, 11)
+layer_4/name = "Rotator2"
+layer_4/tile_data = PackedInt32Array(131073, 786432, 11, 131074, 786432, 11, 196610, 786432, 11, 196609, 786432, 11, 131075, 851968, 11, 131076, 851968, 11, 196612, 851968, 11, 196611, 851968, 11, 262147, 917504, 11, 262148, 917504, 11, 327684, 917504, 11, 327683, 917504, 11, 262145, 983040, 11, 262146, 983040, 11, 327682, 983040, 11, 327681, 983040, 11)
+layer_5/name = "Rotator3"
+layer_5/tile_data = PackedInt32Array(262152, 786432, 11, 262153, 851968, 11, 327689, 917504, 11, 327688, 983040, 11)
+layer_6/name = "Rotator4"
+layer_6/tile_data = PackedInt32Array(65550, 851968, 11, 65551, 851968, 11, 65552, 851968, 11, 131088, 851968, 11, 196624, 851968, 11, 196623, 851968, 11, 196622, 851968, 11, 131086, 851968, 11, 131087, 851968, 11, 196619, 786432, 11, 262158, 917504, 11, 262159, 917504, 11, 262160, 917504, 11, 327696, 917504, 11, 393232, 917504, 11, 393231, 917504, 11, 393230, 917504, 11, 327694, 917504, 11, 327695, 917504, 11, 262155, 983040, 11, 262156, 983040, 11, 262157, 983040, 11, 327693, 983040, 11, 393229, 983040, 11, 393228, 983040, 11, 393227, 983040, 11, 327691, 983040, 11, 327692, 983040, 11, 196621, 786432, 11, 131085, 786432, 11, 65549, 786432, 11, 65548, 786432, 11, 65547, 786432, 11, 131083, 786432, 11, 131084, 786432, 11, 196620, 786432, 11)
 script = ExtResource("4_p05uu")
-map_size = 10
 
-[node name="RotationGrid" parent="GameWorld" instance=ExtResource("4_0q15b")]
-layer_0/tile_data = PackedInt32Array(131074, 655360, 3, 196610, 655360, 2, 196609, 720896, 3, 131073, 589824, 2, 131075, 851968, 1, 131076, 851968, 2, 196611, 851968, 2, 196612, 851968, 1, 262147, 262144, 1, 262148, 262144, 1, 327684, 262144, 1, 327683, 262144, 1, 262145, 655360, 4, 262146, 720896, 4, 327682, 720896, 5, 327681, 589824, 5)
-layer_1/tile_data = PackedInt32Array(131073, 786432, 11, 131074, 786432, 11, 196610, 786432, 11, 196609, 786432, 11, 131075, 851968, 11, 131076, 851968, 11, 196612, 851968, 11, 196611, 851968, 11, 262147, 917504, 11, 262148, 917504, 11, 327684, 917504, 11, 327683, 917504, 11, 262145, 983040, 11, 327682, 983040, 11, 327681, 983040, 11, 262146, 983040, 11)
+[node name="Rotator" parent="GameWorld" instance=ExtResource("5_3et3l")]
+layer_name = "Rotator1"
 
-[node name="CollisionShape2D" parent="GameWorld/RotationGrid/PlayerDetectionArea" index="0"]
-position = Vector2(192, 256.5)
-shape = SubResource("RectangleShape2D_7dcs8")
+[node name="CollisionShape2D" parent="GameWorld/Rotator" index="0"]
+position = Vector2(478, 193)
+shape = SubResource("RectangleShape2D_d47c5")
 
-[node name="RotationGrid2" parent="GameWorld" instance=ExtResource("4_0q15b")]
-layer_0/tile_data = PackedInt32Array(131077, 589824, 4, 131078, 655360, 4, 196614, 655360, 5, 196613, 720896, 4)
-layer_1/tile_data = PackedInt32Array(131077, 786432, 11, 131078, 851968, 11, 196614, 917504, 11, 196613, 983040, 11)
+[node name="Rotator2" parent="GameWorld" instance=ExtResource("5_3et3l")]
+layer_name = "Rotator2"
 
-[node name="CollisionShape2D" parent="GameWorld/RotationGrid2/PlayerDetectionArea" index="0"]
-position = Vector2(384.875, 194.125)
-shape = SubResource("RectangleShape2D_7kj7y")
+[node name="CollisionShape2D" parent="GameWorld/Rotator2" index="0"]
+position = Vector2(193.75, 258.25)
+shape = SubResource("RectangleShape2D_3wlkb")
 
-[editable path="GameWorld/RotationGrid"]
-[editable path="GameWorld/RotationGrid2"]
+[node name="Rotator3" parent="GameWorld" instance=ExtResource("5_3et3l")]
+layer_name = "Rotator3"
+
+[node name="CollisionShape2D" parent="GameWorld/Rotator3" index="0"]
+position = Vector2(577, 322)
+shape = SubResource("RectangleShape2D_ri211")
+
+[node name="Rotator4" parent="GameWorld" instance=ExtResource("5_3et3l")]
+layer_name = "Rotator4"
+
+[node name="CollisionShape2D" parent="GameWorld/Rotator4" index="0"]
+position = Vector2(897.212, 256.292)
+shape = SubResource("RectangleShape2D_updh1")
+
+[connection signal="get_quadrants" from="GameWorld/Rotator" to="GameWorld" method="_on_rotator_get_quadrants"]
+[connection signal="rotate" from="GameWorld/Rotator" to="GameWorld" method="_on_rotator_rotate"]
+[connection signal="get_quadrants" from="GameWorld/Rotator2" to="GameWorld" method="_on_rotator_get_quadrants"]
+[connection signal="rotate" from="GameWorld/Rotator2" to="GameWorld" method="_on_rotator_rotate"]
+[connection signal="get_quadrants" from="GameWorld/Rotator3" to="GameWorld" method="_on_rotator_get_quadrants"]
+[connection signal="rotate" from="GameWorld/Rotator3" to="GameWorld" method="_on_rotator_rotate"]
+[connection signal="get_quadrants" from="GameWorld/Rotator4" to="GameWorld" method="_on_rotator_get_quadrants"]
+[connection signal="rotate" from="GameWorld/Rotator4" to="GameWorld" method="_on_rotator_rotate"]
+
+[editable path="GameWorld/Rotator"]
+[editable path="GameWorld/Rotator2"]
+[editable path="GameWorld/Rotator3"]
+[editable path="GameWorld/Rotator4"]
