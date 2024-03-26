@@ -3,7 +3,10 @@ extends TileMap
 
 @onready var quad_temp
 
-
+@onready var quad0_data: Array
+@onready var quad1_data: Array
+@onready var quad2_data: Array
+@onready var quad3_data: Array
 
 @onready var quadrant0: Array
 @onready var quadrant1: Array
@@ -33,17 +36,32 @@ func _ready():
 					quadrant3.append(Vector2i(x, y))
 
 func _process(delta):
-	if Input.is_action_just_pressed("rotate_key"):
-		if can_rotate:
-				rotate_group_right()
+	if can_rotate:
+		if Input.is_action_just_pressed("rotate_left"):
+			rotate_group_left()
+		elif Input.is_action_just_pressed("rotate_right"):
+			rotate_group_right()
+
+func rotate_group_left():
+	save_tile_data()
+	quad_temp = quadrant0
+	quadrant0 = quadrant3
+	quadrant3 = quadrant2
+	quadrant2 = quadrant1
+	quadrant1 = quad_temp
+	generate_new_cells()
 
 func rotate_group_right():
-	var quad0_data: Array
-	var quad1_data: Array
-	var quad2_data: Array
-	var quad3_data: Array
-	
-	# Save tile data
+	save_tile_data()
+	quad_temp = quadrant0
+	quadrant0 = quadrant1
+	quadrant1 = quadrant2
+	quadrant2 = quadrant3
+	quadrant3 = quad_temp
+	generate_new_cells()
+
+# Helper function
+func save_tile_data() -> void:
 	for x in quadrant0.size():
 		quad0_data.append(get_cell_atlas_coords(0, quadrant0[x], false))
 	for x in quadrant1.size():
@@ -52,14 +70,9 @@ func rotate_group_right():
 		quad2_data.append(get_cell_atlas_coords(0, quadrant2[x], false))
 	for x in quadrant3.size():
 		quad3_data.append(get_cell_atlas_coords(0, quadrant3[x], false))
-	
-	# Save tile location
-	quad_temp = quadrant0
-	quadrant0 = quadrant1
-	quadrant1 = quadrant2
-	quadrant2 = quadrant3
-	quadrant3 = quad_temp
-	
+
+# Helper function
+func generate_new_cells() -> void:
 	# Erase old cells
 	for x in quadrant0.size():
 		erase_cell(0, quadrant0[x])

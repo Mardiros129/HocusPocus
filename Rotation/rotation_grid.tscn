@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://bf78h4v02cr5o"]
+[gd_scene load_steps=5 format=3 uid="uid://bf78h4v02cr5o"]
 
 [ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="1_7dp5a"]
-[ext_resource type="PackedScene" uid="uid://c67uahkhduf2k" path="res://Rotation/player_detector.tscn" id="2_rwsyv"]
 [ext_resource type="Script" path="res://Rotation/RotationGrid.gd" id="3_xdqu7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_txqsr"]
@@ -800,21 +799,17 @@ texture_region_size = Vector2i(64, 64)
 21:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 21:11/0/physics_layer_0/angular_velocity = 0.0
 
-[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_lp860"]
-scenes/1/scene = ExtResource("2_rwsyv")
-
 [sub_resource type="TileSet" id="TileSet_uauod"]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
 custom_data_layer_0/name = "Quadrant"
 custom_data_layer_0/type = 2
-sources/1 = SubResource("TileSetScenesCollectionSource_lp860")
 sources/0 = SubResource("TileSetAtlasSource_txqsr")
 
 [node name="RotationGrid" type="TileMap"]
 tile_set = SubResource("TileSet_uauod")
 format = 2
-layer_0/name = "World"
+layer_0/name = "Rotator"
 layer_1/name = "Quadrant"
 layer_1/z_index = -1
 layer_1/tile_data = PackedInt32Array()

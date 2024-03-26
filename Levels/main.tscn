@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Levels/main.gd" id="1_3oewu"]
 [ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="1_6lts0"]
 [ext_resource type="PackedScene" uid="uid://cq3c2h875hxmb" path="res://character.tscn" id="3_3b2in"]
-[ext_resource type="PackedScene" uid="uid://c67uahkhduf2k" path="res://Rotation/player_detector.tscn" id="3_30mxe"]
 [ext_resource type="PackedScene" uid="uid://bf78h4v02cr5o" path="res://Rotation/rotation_grid.tscn" id="4_0q15b"]
+[ext_resource type="Script" path="res://Levels/GameWorld.gd" id="4_p05uu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ldaek"]
 texture = ExtResource("1_6lts0")
@@ -584,6 +584,7 @@ texture_region_size = Vector2i(64, 64)
 9:8/0 = 0
 9:8/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 9:8/0/physics_layer_0/angular_velocity = 0.0
+9:8/0/custom_data_0 = true
 10:8/0 = 0
 10:8/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 10:8/0/physics_layer_0/angular_velocity = 0.0
@@ -823,14 +824,16 @@ texture_region_size = Vector2i(64, 64)
 4:1/0/physics_layer_0/angular_velocity = 0.0
 4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, 32, -32, 32)
 
-[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_3pb23"]
-scenes/1/scene = ExtResource("3_30mxe")
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_wc6m3"]
+scenes/3/scene = ExtResource("3_3b2in")
 
 [sub_resource type="TileSet" id="TileSet_771ys"]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
+custom_data_layer_0/name = "Player"
+custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_ldaek")
-sources/2 = SubResource("TileSetScenesCollectionSource_3pb23")
+sources/1 = SubResource("TileSetScenesCollectionSource_wc6m3")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dcs8"]
 size = Vector2(230, 231)
@@ -845,12 +848,9 @@ script = ExtResource("1_3oewu")
 tile_set = SubResource("TileSet_771ys")
 format = 2
 layer_0/name = "World"
-layer_1/name = "Rotator"
-layer_1/z_index = -1
-layer_1/tile_data = PackedInt32Array()
-layer_2/name = "Quadrant"
-layer_2/z_index = -1
-layer_2/tile_data = PackedInt32Array()
+layer_0/tile_data = PackedInt32Array(65540, 1, 196608)
+script = ExtResource("4_p05uu")
+map_size = 10
 
 [node name="RotationGrid" parent="GameWorld" instance=ExtResource("4_0q15b")]
 layer_0/tile_data = PackedInt32Array(131074, 655360, 3, 196610, 655360, 2, 196609, 720896, 3, 131073, 589824, 2, 131075, 851968, 1, 131076, 851968, 2, 196611, 851968, 2, 196612, 851968, 1, 262147, 262144, 1, 262148, 262144, 1, 327684, 262144, 1, 327683, 262144, 1, 262145, 655360, 4, 262146, 720896, 4, 327682, 720896, 5, 327681, 589824, 5)
@@ -867,9 +867,6 @@ layer_1/tile_data = PackedInt32Array(131077, 786432, 11, 131078, 851968, 11, 196
 [node name="CollisionShape2D" parent="GameWorld/RotationGrid2/PlayerDetectionArea" index="0"]
 position = Vector2(384.875, 194.125)
 shape = SubResource("RectangleShape2D_7kj7y")
-
-[node name="Character" parent="." instance=ExtResource("3_3b2in")]
-position = Vector2(162, 68)
 
 [editable path="GameWorld/RotationGrid"]
 [editable path="GameWorld/RotationGrid2"]
