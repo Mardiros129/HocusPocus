@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dpdcsyvbm48qb"]
+[gd_scene load_steps=14 format=3 uid="uid://dpdcsyvbm48qb"]
 
 [ext_resource type="Script" path="res://Levels/main.gd" id="1_3oewu"]
 [ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="1_6lts0"]
@@ -840,6 +840,9 @@ sources/1 = SubResource("TileSetScenesCollectionSource_wc6m3")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d47c5"]
 size = Vector2(164, 108)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8pmhr"]
+size = Vector2(101, 172.5)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3wlkb"]
 size = Vector2(234.5, 231.5)
 
@@ -860,7 +863,7 @@ layer_0/z_index = 1
 layer_0/tile_data = PackedInt32Array(131078, 720896, 7, 262147, 262144, 1, 262148, 262144, 1, 327684, 262144, 1, 327683, 262144, 1, 196611, 851968, 2, 131076, 851968, 2, 196612, 851968, 1, 131075, 851968, 1, 131073, 589824, 2, 131074, 655360, 3, 196609, 720896, 3, 196610, 655360, 2, 262145, 655360, 4, 262146, 720896, 4, 327681, 589824, 5, 327682, 720896, 5, 327689, 589824, 8, 262155, 1048576, 8, 262157, 1048576, 8, 327693, 1048576, 8, 393229, 1048576, 8, 393228, 1048576, 8, 393227, 1048576, 8, 196621, 1048576, 8, 196620, 1048576, 8, 196619, 1048576, 8, 131083, 1048576, 8, 65547, 1048576, 8, 65548, 1048576, 8, 65549, 1048576, 8, 65550, 1048576, 8, 196622, 1048576, 8, 196624, 1048576, 8, 65552, 1048576, 8, 262158, 1048576, 8, 262159, 1048576, 8, 262160, 1048576, 8, 327696, 1048576, 8, 393232, 1048576, 8, 393230, 1048576, 8, 327695, 1376256, 9, 131084, 1310720, 9)
 layer_1/name = "Characters"
 layer_1/z_index = 1
-layer_1/tile_data = PackedInt32Array(65541, 1, 196608)
+layer_1/tile_data = PackedInt32Array(65539, 1, 196608)
 layer_2/name = "Static"
 layer_2/z_index = 1
 layer_2/tile_data = PackedInt32Array()
@@ -880,6 +883,10 @@ layer_name = "Rotator1"
 [node name="CollisionShape2D" parent="GameWorld/Rotator" index="0"]
 position = Vector2(478, 193)
 shape = SubResource("RectangleShape2D_d47c5")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="GameWorld/Rotator"]
+position = Vector2(444.5, 225.75)
+shape = SubResource("RectangleShape2D_8pmhr")
 
 [node name="Rotator2" parent="GameWorld" instance=ExtResource("5_3et3l")]
 layer_name = "Rotator2"

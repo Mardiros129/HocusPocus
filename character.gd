@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@onready var location = [0, 0]
+@onready var location = Vector2i(0, 0)
 
 @export var tile_size = 64
 @onready var offset
@@ -21,3 +21,7 @@ func _input(event):
 		location[1] += 1
 
 	self.position = Vector2(location[0] * tile_size + offset, location[1] * tile_size + offset)
+
+func move_to_loc(loc: Vector2i):
+	location = loc
+	self.position = Vector2(loc.x * tile_size + offset, loc.y * tile_size + offset)

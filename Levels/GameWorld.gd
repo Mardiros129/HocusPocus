@@ -3,6 +3,7 @@ extends TileMap
 @export var map_size = 100
 @export var movable_layer: int
 
+
 func _on_rotator_get_quadrants(layer, rotator):
 	# First, find the correct layer.
 	for n in get_layers_count():
@@ -39,20 +40,23 @@ func _on_rotator_get_quadrants(layer, rotator):
 	rotator.quadrant3 = quadrant3
 
 func _on_rotator_rotate(quadrant0, quadrant1, quadrant2, quadrant3, go_right):
-	var quad0_data: Array
-	var quad1_data: Array
-	var quad2_data: Array
-	var quad3_data: Array
+	
+	rotate_character(quadrant0, quadrant1, quadrant2, quadrant3, go_right)
 	
 	# Save tile data.
-	for x in quadrant0.size():
-		quad0_data.append(get_cell_atlas_coords(movable_layer, quadrant0[x], false))
-	for x in quadrant1.size():
-		quad1_data.append(get_cell_atlas_coords(movable_layer, quadrant1[x], false))
-	for x in quadrant2.size():
-		quad2_data.append(get_cell_atlas_coords(movable_layer, quadrant2[x], false))
-	for x in quadrant3.size():
-		quad3_data.append(get_cell_atlas_coords(movable_layer, quadrant3[x], false))
+	var quad0_data: Array[Vector2i]
+	var quad1_data: Array[Vector2i]
+	var quad2_data: Array[Vector2i]
+	var quad3_data: Array[Vector2i]
+	
+	for n in quadrant0.size():
+		quad0_data.append(get_cell_atlas_coords(movable_layer, quadrant0[n], false))
+	for n in quadrant1.size():
+		quad1_data.append(get_cell_atlas_coords(movable_layer, quadrant1[n], false))
+	for n in quadrant2.size():
+		quad2_data.append(get_cell_atlas_coords(movable_layer, quadrant2[n], false))
+	for n in quadrant3.size():
+		quad3_data.append(get_cell_atlas_coords(movable_layer, quadrant3[n], false))
 	
 	# Rotate right or left.
 	var quad_temp
@@ -70,22 +74,51 @@ func _on_rotator_rotate(quadrant0, quadrant1, quadrant2, quadrant3, go_right):
 		quadrant1 = quad_temp
 	
 	# Erase old cells
-	for x in quadrant0.size():
-		erase_cell(movable_layer, quadrant0[x])
-	for x in quadrant1.size():
-		erase_cell(movable_layer, quadrant1[x])
-	for x in quadrant2.size():
-		erase_cell(movable_layer, quadrant2[x])
-	for x in quadrant3.size():
-		erase_cell(movable_layer, quadrant3[x])
+	for n in quadrant0.size():
+		erase_cell(movable_layer, quadrant0[n])
+	for n in quadrant1.size():
+		erase_cell(movable_layer, quadrant1[n])
+	for n in quadrant2.size():
+		erase_cell(movable_layer, quadrant2[n])
+	for n in quadrant3.size():
+		erase_cell(movable_layer, quadrant3[n])
 	
 	# Draw new cells
-	for x in quadrant0.size():
-		set_cell(movable_layer, quadrant0[x], 0, quad0_data[x], 0)
-	for x in quadrant1.size():
-		set_cell(movable_layer, quadrant1[x], 0, quad1_data[x], 0)
-	for x in quadrant2.size():
-		set_cell(movable_layer, quadrant2[x], 0, quad2_data[x], 0)
-	for x in quadrant3.size():
-		set_cell(movable_layer, quadrant3[x], 0, quad3_data[x], 0)
+	for n in quadrant0.size():
+		set_cell(movable_layer, quadrant0[n], 0, quad0_data[n], 0)
+	for n in quadrant1.size():
+		set_cell(movable_layer, quadrant1[n], 0, quad1_data[n], 0)
+	for n in quadrant2.size():
+		set_cell(movable_layer, quadrant2[n], 0, quad2_data[n], 0)
+	for n in quadrant3.size():
+		set_cell(movable_layer, quadrant3[n], 0, quad3_data[n], 0)
+
+# ***** Need to refactor later, very icky *****
+func rotate_character(quadrant0: Array[Vector2i], quadrant1: Array, quadrant2: Array, quadrant3: Array, go_right: bool):
+	var character = get_node("Character")
+	var char_loc:Vector2i = character.location
 	
+	for n in quadrant0.size():
+		if quadrant0[n] == char_loc:
+			if go_right:
+				character.move_to_loc(quadrant1[n])
+			else:
+				character.move_to_loc(quadrant3[n])
+	for n in quadrant1.size():
+		if quadrant1[n] == char_loc:
+			if go_right:
+				character.move_to_loc(quadrant2[n])
+			else:
+				character.move_to_loc(quadrant0[n])
+	for n in quadrant2.size():
+		if quadrant2[n] == char_loc:
+			if go_right:
+				character.move_to_loc(quadrant3[n])
+			else:
+				character.move_to_loc(quadrant1[n])
+	for n in quadrant3.size():
+		if quadrant3[n] == char_loc:
+			if go_right:
+				character.move_to_loc(quadrant0[n])
+			else:
+				character.move_to_loc(quadrant2[n])

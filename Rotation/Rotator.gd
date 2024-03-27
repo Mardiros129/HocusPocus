@@ -3,10 +3,10 @@ extends Area2D
 @export var layer_name: String
 @onready var layer_number
 
-@onready var quadrant0: Array
-@onready var quadrant1: Array
-@onready var quadrant2: Array
-@onready var quadrant3: Array
+@onready var quadrant0: Array[Vector2i]
+@onready var quadrant1: Array[Vector2i]
+@onready var quadrant2: Array[Vector2i]
+@onready var quadrant3: Array[Vector2i]
 
 @onready var can_rotate = false
 
