@@ -10,7 +10,6 @@ extends Area2D
 
 @onready var can_rotate = false
 
-signal get_quadrants(layer: String, rotator: Area2D)
 signal rotate(quadrant0: Array[Vector2i], quadrant1: Array[Vector2i], quadrant2: Array[Vector2i], quadrant3: Array[Vector2i], go_right:bool)
 
 
@@ -26,9 +25,10 @@ func _process(delta):
 		elif Input.is_action_just_pressed("rotate_right"):
 			emit_signal("rotate", quadrant0, quadrant1, quadrant2, quadrant3, true)
 
-func _on_area_entered(area):
+func _on_body_entered(body):
 	print("Player entered.")
 	can_rotate = true
 
-func _on_area_exited(area):
+func _on_body_exited(body):
+	print("Player exited.")
 	can_rotate = false

@@ -1,14 +1,31 @@
 extends TileMap
 
-@export var map_size = 100
+@onready var map_size = -1
 @export var movable_layer: int
 var character
 
 
-func _on_rotator_get_quadrants(layer, rotator):
+func _ready():
+	for n in get_layers_count():
+		var all_cells = get_used_cells(n)
+		for m in all_cells.size():
+			if all_cells[m][0] > map_size:
+				map_size = all_cells[m][0]
+			if all_cells[m][1] > map_size:
+				map_size = all_cells[m][1]
+				
+	map_size += 1
+	print("Map size is " + str(map_size))
+	
+	var child_nodes = get_children(false)
+	for n in child_nodes.size():
+		if child_nodes[n].is_in_group("Rotator"):
+			generate_rotator_quadrants(child_nodes[n])
+
+func generate_rotator_quadrants(rotator):
 	# First, find the correct layer.
 	for n in get_layers_count():
-		if get_layer_name(n) == layer:
+		if get_layer_name(n) == rotator.layer_name:
 			rotator.layer_number = n
 			break
 	
@@ -17,7 +34,6 @@ func _on_rotator_get_quadrants(layer, rotator):
 	var quadrant2: Array[Vector2i]
 	var quadrant3: Array[Vector2i]
 	
-	# Check all cells in the grid. Magic number, change later.
 	for x in map_size:
 		for y in map_size:
 			var my_tile = get_cell_tile_data(rotator.layer_number, Vector2i(x, y), false)
@@ -93,6 +109,9 @@ func _on_rotator_rotate(quadrant0, quadrant1, quadrant2, quadrant3, go_right):
 		set_cell(movable_layer, quadrant2[n], 0, quad2_data[n], 0)
 	for n in quadrant3.size():
 		set_cell(movable_layer, quadrant3[n], 0, quad3_data[n], 0)
+	
+	if quadrant0.size() != quadrant1.size() || quadrant0.size() != quadrant2.size() || quadrant0.size() != quadrant3.size():
+		print("Quadrant sizes are not the same.")
 
 # ***** Need to refactor later, very icky *****
 func rotate_character(quadrant0: Array[Vector2i], quadrant1: Array, quadrant2: Array, quadrant3: Array, go_right: bool):
@@ -123,6 +142,7 @@ func rotate_character(quadrant0: Array[Vector2i], quadrant1: Array, quadrant2: A
 			else:
 				character.move_to_loc(quadrant2[n])
 
+# Sets the character to a var. Need to change later ***
 func _on_child_entered_tree(node):
 	if node.name == "Character":
 		character = get_node("Character")

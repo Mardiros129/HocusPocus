@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cq3c2h875hxmb"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_02pl8"]
-[ext_resource type="Texture2D" uid="uid://b70ye174htwia" path="res://icon.svg" id="1_dm1bt"]
+[ext_resource type="Texture2D" uid="uid://crwixpvf8wa6p" path="res://tinman_head.png" id="2_guwat"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vuspk"]
 size = Vector2(43, 43)
@@ -14,8 +14,8 @@ script = ExtResource("1_02pl8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 2
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("1_dm1bt")
+scale = Vector2(0.0354005, 0.0354005)
+texture = ExtResource("2_guwat")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 0.5)

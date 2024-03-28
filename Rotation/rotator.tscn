@@ -1,11 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://cxu8nwf2krlkw"]
+[gd_scene load_steps=3 format=3 uid="uid://cxu8nwf2krlkw"]
 
 [ext_resource type="Script" path="res://Rotation/Rotator.gd" id="1_k6h7g"]
 
-[node name="Rotator" type="Area2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aotur"]
+
+[node name="Rotator" type="Area2D" groups=["Rotator"]]
 script = ExtResource("1_k6h7g")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_aotur")
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
-[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
