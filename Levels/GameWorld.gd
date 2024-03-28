@@ -2,6 +2,7 @@ extends TileMap
 
 @export var map_size = 100
 @export var movable_layer: int
+var character
 
 
 func _on_rotator_get_quadrants(layer, rotator):
@@ -95,7 +96,6 @@ func _on_rotator_rotate(quadrant0, quadrant1, quadrant2, quadrant3, go_right):
 
 # ***** Need to refactor later, very icky *****
 func rotate_character(quadrant0: Array[Vector2i], quadrant1: Array, quadrant2: Array, quadrant3: Array, go_right: bool):
-	var character = get_node("Character")
 	var char_loc:Vector2i = character.location
 	
 	for n in quadrant0.size():
@@ -122,3 +122,9 @@ func rotate_character(quadrant0: Array[Vector2i], quadrant1: Array, quadrant2: A
 				character.move_to_loc(quadrant0[n])
 			else:
 				character.move_to_loc(quadrant2[n])
+
+func _on_child_entered_tree(node):
+	if node.name == "Character":
+		character = get_node("Character")
+		character.game_world = self
+		disconnect("child_entered_tree", Callable(self, "_on_child_entered_tree"))

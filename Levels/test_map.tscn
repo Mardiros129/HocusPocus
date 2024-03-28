@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dpdcsyvbm48qb"]
+
+[ext_resource type="Script" path="res://Levels/test_map.gd" id="1_syy3t"]
+[ext_resource type="PackedScene" uid="uid://dqsurrrqxrtqf" path="res://Levels/game_world.tscn" id="2_2upjt"]
+[ext_resource type="PackedScene" uid="uid://cxu8nwf2krlkw" path="res://Rotation/rotator.tscn" id="3_s6qug"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_41ymv"]
+size = Vector2(357.5, 357)
+
+[node name="TestMap" type="Node2D"]
+script = ExtResource("1_syy3t")
+
+[node name="GameWorld" parent="." instance=ExtResource("2_2upjt")]
+layer_0/tile_data = PackedInt32Array(131077, 1048576, 8, 131079, 1048576, 8, 262149, 1048576, 8, 262151, 1048576, 8, 196616, 1048576, 8, 131081, 1048576, 8, 196618, 1048576, 8, 262153, 1048576, 8, 196617, 1048576, 8, 327688, 1048576, 8, 393225, 1048576, 8, 458762, 1048576, 8, 327686, 1048576, 8, 393223, 1048576, 8, 458759, 1048576, 8, 458758, 1048576, 8, 458757, 1048576, 8, 393221, 1048576, 8, 393222, 1048576, 8, 327687, 1048576, 8)
+layer_1/name = "Units"
+layer_1/tile_data = PackedInt32Array(65539, 1, 196608)
+layer_3/tile_data = PackedInt32Array(131077, 786432, 11, 131078, 786432, 11, 131079, 786432, 11, 196615, 786432, 11, 262151, 786432, 11, 262150, 786432, 11, 262149, 786432, 11, 196613, 786432, 11, 196614, 786432, 11, 131080, 851968, 11, 196616, 851968, 11, 262152, 851968, 11, 262153, 851968, 11, 262154, 851968, 11, 196618, 851968, 11, 131082, 851968, 11, 131081, 851968, 11, 196617, 851968, 11, 327688, 917504, 11, 327689, 917504, 11, 327690, 917504, 11, 393226, 917504, 11, 458762, 917504, 11, 458761, 917504, 11, 458760, 917504, 11, 393224, 917504, 11, 393225, 917504, 11, 327685, 983040, 11, 327686, 983040, 11, 327687, 983040, 11, 393223, 983040, 11, 458759, 983040, 11, 458758, 983040, 11, 458757, 983040, 11, 393221, 983040, 11, 393222, 983040, 11)
+
+[node name="Rotator" parent="GameWorld" instance=ExtResource("3_s6qug")]
+layer_name = "Rotator1"
+
+[node name="CollisionShape2D" parent="GameWorld/Rotator" index="0"]
+position = Vector2(512.25, 320.5)
+shape = SubResource("RectangleShape2D_41ymv")
+
+[connection signal="get_quadrants" from="GameWorld/Rotator" to="GameWorld" method="_on_rotator_get_quadrants"]
+[connection signal="rotate" from="GameWorld/Rotator" to="GameWorld" method="_on_rotator_rotate"]
+
+[editable path="GameWorld/Rotator"]

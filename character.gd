@@ -1,27 +1,38 @@
 extends CharacterBody2D
 
 @onready var location = Vector2i(0, 0)
+@onready var target_loc
 
 @export var tile_size = 64
 @onready var offset
+@onready var game_world
 
 func _ready():
 	offset = tile_size / 2
 	location[0] = (position.x - offset) / tile_size
 	location[1] = (position.y - offset) / tile_size
+	target_loc = location
 
 func _input(event):
 	if event.is_action_pressed("move_right"):
-		location[0] += 1
+		target_loc[0] += 1
 	if event.is_action_pressed("move_left"):
-		location[0] -= 1
+		target_loc[0] -= 1
 	if event.is_action_pressed("move_up"):
-		location[1] -= 1
+		target_loc[1] -= 1
 	if event.is_action_pressed("move_down"):
-		location[1] += 1
-
-	self.position = Vector2(location[0] * tile_size + offset, location[1] * tile_size + offset)
+		target_loc[1] += 1
+	
+	for n in game_world.get_layers_count():
+		var my_tile = game_world.get_cell_tile_data(n, target_loc, false)
+		if my_tile != null:
+			if my_tile.get_custom_data("Wall") == true:
+				target_loc = location
+		else:
+			location = target_loc
+			self.position = Vector2(location[0] * tile_size + offset, location[1] * tile_size + offset)
 
 func move_to_loc(loc: Vector2i):
 	location = loc
+	target_loc = loc
 	self.position = Vector2(loc.x * tile_size + offset, loc.y * tile_size + offset)
