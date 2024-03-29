@@ -11,7 +11,7 @@ extends Area2D
 @onready var can_rotate = false
 
 signal rotate(quadrant0: Array[Vector2i], quadrant1: Array[Vector2i], quadrant2: Array[Vector2i], quadrant3: Array[Vector2i], go_right:bool)
-
+signal test(name: String)
 
 func _ready():
 	if layer_name == "":
@@ -22,8 +22,10 @@ func _process(delta):
 	if can_rotate:
 		if Input.is_action_just_pressed("rotate_left"):
 			emit_signal("rotate", quadrant0, quadrant1, quadrant2, quadrant3, false)
+			emit_signal("test", layer_name)
 		elif Input.is_action_just_pressed("rotate_right"):
 			emit_signal("rotate", quadrant0, quadrant1, quadrant2, quadrant3, true)
+			emit_signal("test", layer_name)
 
 func _on_body_entered(body):
 	print("Player entered.")

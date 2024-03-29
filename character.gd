@@ -2,11 +2,13 @@ extends CharacterBody2D
 
 @onready var location = Vector2i(0, 0)
 @onready var target_loc
-@onready var has_key = false
 
 @export var tile_size = 64
 @onready var offset
 @onready var game_world
+
+signal level_complete
+signal got_key
 
 func _ready():
 	offset = tile_size / 2
@@ -29,11 +31,10 @@ func _input(event):
 		if my_tile != null:
 			if my_tile.get_custom_data("Wall") == true:
 				target_loc = location
-			if has_key && my_tile.get_custom_data("ExitDoor") == true:
-				print("Finished!")
-				get_tree().quit()
+			if my_tile.get_custom_data("ExitDoor") == true:
+				emit_signal("level_complete")
 			if my_tile.get_custom_data("Key") == true:
-				has_key = true
+				emit_signal("got_key")
 				game_world.erase_cell(n, target_loc)
 		else:
 			location = target_loc

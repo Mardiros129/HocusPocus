@@ -3,7 +3,8 @@ extends TileMap
 @onready var map_size = -1
 @export var movable_layer: int
 var character
-
+@export var next_level: PackedScene
+@export var door_locked = true
 
 func _ready():
 	for n in get_layers_count():
@@ -21,6 +22,8 @@ func _ready():
 	for n in child_nodes.size():
 		if child_nodes[n].is_in_group("Rotator"):
 			generate_rotator_quadrants(child_nodes[n])
+			#child_nodes[n].test.connect(_test_print)
+			child_nodes[n].rotate.connect(_on_rotator_rotate)
 
 func generate_rotator_quadrants(rotator):
 	# First, find the correct layer.
@@ -148,3 +151,15 @@ func _on_child_entered_tree(node):
 		character = get_node("Character")
 		character.game_world = self
 		disconnect("child_entered_tree", Callable(self, "_on_child_entered_tree"))
+		character.level_complete.connect(_level_complete)
+		character.got_key.connect(_got_key)
+
+func _level_complete():
+	if !door_locked:
+		if next_level == null:
+			get_tree().quit()
+		else:
+			get_tree().change_scene_to_packed(next_level)
+
+func _got_key():
+	door_locked = false

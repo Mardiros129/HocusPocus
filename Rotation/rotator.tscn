@@ -3,11 +3,14 @@
 [ext_resource type="Script" path="res://Rotation/Rotator.gd" id="1_k6h7g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aotur"]
+size = Vector2(1183, 678)
 
 [node name="Rotator" type="Area2D" groups=["Rotator"]]
 script = ExtResource("1_k6h7g")
+layer_name = "Rotator1"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(581.5, 329)
 shape = SubResource("RectangleShape2D_aotur")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://dqsurrrqxrtqf"]
+[gd_scene load_steps=7 format=3 uid="uid://dqsurrrqxrtqf"]
 
 [ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="1_unfch"]
 [ext_resource type="PackedScene" uid="uid://cq3c2h875hxmb" path="res://character.tscn" id="2_fppg3"]
-[ext_resource type="PackedScene" uid="uid://3l5drjsadfj6" path="res://exit_door.tscn" id="2_xsuux"]
 [ext_resource type="Script" path="res://Levels/GameWorld.gd" id="3_si6em"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ldaek"]
@@ -834,7 +833,6 @@ texture_region_size = Vector2i(64, 64)
 4:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, 32, -32, 32)
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_wc6m3"]
-scenes/1/scene = ExtResource("2_xsuux")
 scenes/3/scene = ExtResource("2_fppg3")
 
 [sub_resource type="TileSet" id="TileSet_771ys"]
