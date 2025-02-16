@@ -39,7 +39,7 @@ func _process(delta):
 			pass
 		
 		MOVING:
-			if check_tile_type(target_loc, "Wall") == true:
+			if check_can_move(target_loc) == false:
 				state = STANDING
 				target_loc = my_loc
 				emit_signal("processing_stopped")
@@ -47,7 +47,7 @@ func _process(delta):
 				delta_move(delta)
 		
 		SLIDING:
-			if check_tile_type(target_loc, "Wall") == true:
+			if check_can_move(target_loc) == false:
 				state = STANDING
 				target_loc = my_loc
 				emit_signal("processing_stopped")
@@ -81,6 +81,43 @@ func _input(event):
 			anim_player.play("facing_down")
 			emit_signal("processing_started")
 			state = MOVING
+
+
+func check_can_move(destination_tile):
+	if check_tile_type(destination_tile, "Wall") == true:
+		return false
+	for n in game_world.get_layers_count():
+		var temp_destination_tile = game_world.get_cell_tile_data(n, destination_tile, false)
+		var temp_location_tile = game_world.get_cell_tile_data(n, my_loc, false)
+		
+		if temp_location_tile != null:
+			if temp_location_tile.get_custom_data("Barrier").x == 1 && facing_direction == UP:
+				return false
+			elif temp_location_tile.get_custom_data("Barrier").y == 1 && facing_direction == RIGHT:
+				return false
+			elif temp_location_tile.get_custom_data("Barrier").z == 1 && facing_direction == DOWN:
+				return false
+			elif temp_location_tile.get_custom_data("Barrier").w == 1 && facing_direction == LEFT:
+				return false
+		
+		if temp_destination_tile != null:
+			if temp_destination_tile.get_custom_data("Barrier").x == 1 && facing_direction == DOWN:
+				return false
+			elif temp_destination_tile.get_custom_data("Barrier").y == 1 && facing_direction == LEFT:
+				return false
+			elif temp_destination_tile.get_custom_data("Barrier").z == 1 && facing_direction == UP:
+				return false
+			elif temp_destination_tile.get_custom_data("Barrier").w == 1 && facing_direction == RIGHT:
+				return false
+				
+			if temp_destination_tile.get_custom_data("Cliff").x == 1 && facing_direction == DOWN:
+				return false
+			elif temp_destination_tile.get_custom_data("Cliff").y == 1 && facing_direction == LEFT:
+				return false
+			elif temp_destination_tile.get_custom_data("Cliff").z == 1 && facing_direction == UP:
+				return false
+			elif temp_destination_tile.get_custom_data("Cliff").w == 1 && facing_direction == RIGHT:
+				return false
 
 
 func check_tile_type(tile_location, type):
