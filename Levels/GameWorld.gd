@@ -5,6 +5,7 @@ extends TileMap
 var character
 @export var next_level: PackedScene
 @export var door_locked = true
+@onready var processing = false
 
 func _ready():
 	for n in get_layers_count():
@@ -22,8 +23,8 @@ func _ready():
 	for n in child_nodes.size():
 		if child_nodes[n].is_in_group("Rotator"):
 			generate_rotator_quadrants(child_nodes[n])
-			#child_nodes[n].test.connect(_test_print)
 			child_nodes[n].rotate.connect(_on_rotator_rotate)
+
 
 func generate_rotator_quadrants(rotator):
 	# First, find the correct layer.
@@ -59,91 +60,94 @@ func generate_rotator_quadrants(rotator):
 	rotator.quadrant2 = quadrant2
 	rotator.quadrant3 = quadrant3
 
-func _on_rotator_rotate(quadrant0, quadrant1, quadrant2, quadrant3, go_right):
-	
-	rotate_character(quadrant0, quadrant1, quadrant2, quadrant3, go_right)
-	
-	# Save tile data.
-	var quad0_data: Array[Vector2i]
-	var quad1_data: Array[Vector2i]
-	var quad2_data: Array[Vector2i]
-	var quad3_data: Array[Vector2i]
-	
-	for n in quadrant0.size():
-		quad0_data.append(get_cell_atlas_coords(movable_layer, quadrant0[n], false))
-	for n in quadrant1.size():
-		quad1_data.append(get_cell_atlas_coords(movable_layer, quadrant1[n], false))
-	for n in quadrant2.size():
-		quad2_data.append(get_cell_atlas_coords(movable_layer, quadrant2[n], false))
-	for n in quadrant3.size():
-		quad3_data.append(get_cell_atlas_coords(movable_layer, quadrant3[n], false))
-	
-	# Rotate right or left.
-	var quad_temp
-	if go_right:
-		quad_temp = quadrant0
-		quadrant0 = quadrant1
-		quadrant1 = quadrant2
-		quadrant2 = quadrant3
-		quadrant3 = quad_temp
-	else:
-		quad_temp = quadrant0
-		quadrant0 = quadrant3
-		quadrant3 = quadrant2
-		quadrant2 = quadrant1
-		quadrant1 = quad_temp
-	
-	# Erase old cells
-	for n in quadrant0.size():
-		erase_cell(movable_layer, quadrant0[n])
-	for n in quadrant1.size():
-		erase_cell(movable_layer, quadrant1[n])
-	for n in quadrant2.size():
-		erase_cell(movable_layer, quadrant2[n])
-	for n in quadrant3.size():
-		erase_cell(movable_layer, quadrant3[n])
-	
-	# Draw new cells
-	for n in quadrant0.size():
-		set_cell(movable_layer, quadrant0[n], 0, quad0_data[n], 0)
-	for n in quadrant1.size():
-		set_cell(movable_layer, quadrant1[n], 0, quad1_data[n], 0)
-	for n in quadrant2.size():
-		set_cell(movable_layer, quadrant2[n], 0, quad2_data[n], 0)
-	for n in quadrant3.size():
-		set_cell(movable_layer, quadrant3[n], 0, quad3_data[n], 0)
-	
-	if quadrant0.size() != quadrant1.size() || quadrant0.size() != quadrant2.size() || quadrant0.size() != quadrant3.size():
-		print("Quadrant sizes are not the same.")
 
 # ***** Need to refactor later, very icky *****
 func rotate_character(quadrant0: Array[Vector2i], quadrant1: Array, quadrant2: Array, quadrant3: Array, go_right: bool):
-	var char_loc:Vector2i = character.location
+	var char_loc:Vector2i = character.my_loc
 	
 	for n in quadrant0.size():
 		if quadrant0[n] == char_loc:
 			if go_right:
-				character.move_to_loc(quadrant1[n])
+				character.instant_move(quadrant1[n])
 			else:
-				character.move_to_loc(quadrant3[n])
+				character.instant_move(quadrant3[n])
 	for n in quadrant1.size():
 		if quadrant1[n] == char_loc:
 			if go_right:
-				character.move_to_loc(quadrant2[n])
+				character.instant_move(quadrant2[n])
 			else:
-				character.move_to_loc(quadrant0[n])
+				character.instant_move(quadrant0[n])
 	for n in quadrant2.size():
 		if quadrant2[n] == char_loc:
 			if go_right:
-				character.move_to_loc(quadrant3[n])
+				character.instant_move(quadrant3[n])
 			else:
-				character.move_to_loc(quadrant1[n])
+				character.instant_move(quadrant1[n])
 	for n in quadrant3.size():
 		if quadrant3[n] == char_loc:
 			if go_right:
-				character.move_to_loc(quadrant0[n])
+				character.instant_move(quadrant0[n])
 			else:
-				character.move_to_loc(quadrant2[n])
+				character.instant_move(quadrant2[n])
+
+
+func _on_rotator_rotate(quadrant0, quadrant1, quadrant2, quadrant3, go_right):
+	if not processing:
+		rotate_character(quadrant0, quadrant1, quadrant2, quadrant3, go_right)
+		
+		# Save tile data.
+		var quad0_data: Array[Vector2i]
+		var quad1_data: Array[Vector2i]
+		var quad2_data: Array[Vector2i]
+		var quad3_data: Array[Vector2i]
+		
+		for n in quadrant0.size():
+			quad0_data.append(get_cell_atlas_coords(movable_layer, quadrant0[n], false))
+		for n in quadrant1.size():
+			quad1_data.append(get_cell_atlas_coords(movable_layer, quadrant1[n], false))
+		for n in quadrant2.size():
+			quad2_data.append(get_cell_atlas_coords(movable_layer, quadrant2[n], false))
+		for n in quadrant3.size():
+			quad3_data.append(get_cell_atlas_coords(movable_layer, quadrant3[n], false))
+		
+		# Rotate right or left.
+		var quad_temp
+		if go_right:
+			quad_temp = quadrant0
+			quadrant0 = quadrant1
+			quadrant1 = quadrant2
+			quadrant2 = quadrant3
+			quadrant3 = quad_temp
+		else:
+			quad_temp = quadrant0
+			quadrant0 = quadrant3
+			quadrant3 = quadrant2
+			quadrant2 = quadrant1
+			quadrant1 = quad_temp
+		
+		# Erase old cells
+		for n in quadrant0.size():
+			erase_cell(movable_layer, quadrant0[n])
+		for n in quadrant1.size():
+			erase_cell(movable_layer, quadrant1[n])
+		for n in quadrant2.size():
+			erase_cell(movable_layer, quadrant2[n])
+		for n in quadrant3.size():
+			erase_cell(movable_layer, quadrant3[n])
+		
+		# Draw new cells
+		for n in quadrant0.size():
+			set_cell(movable_layer, quadrant0[n], 0, quad0_data[n], 0)
+		for n in quadrant1.size():
+			set_cell(movable_layer, quadrant1[n], 0, quad1_data[n], 0)
+		for n in quadrant2.size():
+			set_cell(movable_layer, quadrant2[n], 0, quad2_data[n], 0)
+		for n in quadrant3.size():
+			set_cell(movable_layer, quadrant3[n], 0, quad3_data[n], 0)
+		
+		if quadrant0.size() != quadrant1.size() || quadrant0.size() != quadrant2.size() || quadrant0.size() != quadrant3.size():
+			print("Quadrant sizes are not the same.")
+
 
 # Sets the character to a var. Need to change later ***
 func _on_child_entered_tree(node):
@@ -153,6 +157,8 @@ func _on_child_entered_tree(node):
 		disconnect("child_entered_tree", Callable(self, "_on_child_entered_tree"))
 		character.level_complete.connect(_level_complete)
 		character.got_key.connect(_got_key)
+		character.processing_started.connect(_processing_started)
+		character.processing_stopped.connect(_processing_stopped)
 
 func _level_complete():
 	if !door_locked:
@@ -163,3 +169,9 @@ func _level_complete():
 
 func _got_key():
 	door_locked = false
+
+func _processing_started():
+	processing = true
+
+func _processing_stopped():
+	processing = false

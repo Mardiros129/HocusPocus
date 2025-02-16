@@ -1,85 +1,155 @@
 extends CharacterBody2D
 
 # The grid location of the character
-@onready var location = Vector2i(0, 0)
+@onready var my_loc = Vector2i(0, 0)
 @onready var target_loc = Vector2i(0, 0)
 @export var speed = 300.0
 
+#magic number
+@export var movable_layer = 0
 @export var tile_size = 64
 @onready var offset
 @onready var game_world
 
+@onready var anim_player = $Sprite2D/AnimationPlayer
+
 signal level_complete
 signal got_key
+signal processing_started
+signal processing_stopped
 
 enum {STANDING, MOVING, SLIDING}
 @onready var state = STANDING
 
+enum {UP, DOWN, LEFT, RIGHT}
+@onready var facing_direction = DOWN
+
+
 func _ready():
 	offset = tile_size / 2
-	location[0] = (position.x - offset) / tile_size
-	location[1] = (position.y - offset) / tile_size
-	target_loc[0] = location[0]
-	target_loc[1] = location[1]
+	my_loc.x = (position.x - offset) / tile_size
+	my_loc.y = (position.y - offset) / tile_size
+	target_loc.x = my_loc.x
+	target_loc.y = my_loc.y
+
 
 func _process(delta):
-	if state == MOVING:
-		var delta_speed = delta * speed
-		var target_position = Vector2i(target_loc[0] * tile_size + offset, target_loc[1] * tile_size + offset)
+	match state:
+		STANDING:
+			pass
 		
-		# Consider refactoring later
-		if target_loc.x != location.x:
-			var direction = target_loc.x - location.x
-			position.x += delta_speed * direction
-			# Going left
-			if direction < 0 && target_position.x >= position.x:
-				location.x = target_loc.x
-			# Going right
-			elif direction > 0 && target_position.x <= position.x:
-				location.x = target_loc.x
-				
-		elif target_loc.y != location.y:
-			var direction = target_loc.y - location.y
-			position.y += delta_speed * direction
-			# Going down
-			if direction < 0 && target_position.y >= position.y:
-				location.y = target_loc.y
-			# Going up
-			elif direction > 0 && target_position.y <= position.y:
-				location.y = target_loc.y
-		else:
-			state = STANDING
+		MOVING:
+			if check_tile_type(target_loc, "Wall") == true:
+				state = STANDING
+				target_loc = my_loc
+				emit_signal("processing_stopped")
+			else:
+				delta_move(delta)
 		
+		SLIDING:
+			if check_tile_type(target_loc, "Wall") == true:
+				state = STANDING
+				target_loc = my_loc
+				emit_signal("processing_stopped")
+			else:
+				delta_move(delta)
+
 
 func _input(event):
 	if state == STANDING:
 		if event.is_action_pressed("move_right"):
-			target_loc[0] += 1.0
+			target_loc.x += 1.0
+			facing_direction = RIGHT
+			anim_player.play("facing_right")
+			emit_signal("processing_started")
+			state = MOVING
 		if event.is_action_pressed("move_left"):
-			target_loc[0] -= 1.0
+			target_loc.x -= 1.0
+			facing_direction = LEFT
+			anim_player.play("facing_left")
+			emit_signal("processing_started")
+			state = MOVING
 		if event.is_action_pressed("move_up"):
-			target_loc[1] -= 1.0
+			target_loc.y -= 1.0
+			facing_direction = UP
+			anim_player.play("facing_up")
+			emit_signal("processing_started")
+			state = MOVING
 		if event.is_action_pressed("move_down"):
-			target_loc[1] += 1.0
-		state = MOVING
-	
+			target_loc.y += 1.0
+			facing_direction = DOWN
+			anim_player.play("facing_down")
+			emit_signal("processing_started")
+			state = MOVING
+
+
+func check_tile_type(tile_location, type):
 	for n in game_world.get_layers_count():
-		var my_tile = game_world.get_cell_tile_data(n, target_loc, false)
+		var my_tile = game_world.get_cell_tile_data(n, tile_location, false)
 		if my_tile != null:
-			if my_tile.get_custom_data("Wall") == true:
-				target_loc = location
-				state = STANDING
-			if my_tile.get_custom_data("ExitDoor") == true:
-				emit_signal("level_complete")
-			if my_tile.get_custom_data("Key") == true:
-				emit_signal("got_key")
-				game_world.erase_cell(n, target_loc)
-		#else:
-			#location = target_loc
-			#self.position = Vector2(location[0] * tile_size + offset, location[1] * tile_size + offset)
+			if my_tile.get_custom_data(type) == true:
+				return true
+		else:
+			return false
+
+
+func clear_tile_of_type(tile_location, type):
+	for n in game_world.get_layers_count():
+		var my_tile = game_world.get_cell_tile_data(n, tile_location, false)
+		if my_tile != null:
+			if my_tile.get_custom_data(type) == true:
+				game_world.erase_cell(n, tile_location)
+
+
+# Moves the character based on speed and delta
+func delta_move(delta):
+	var delta_speed = delta * speed
+	var target_position = Vector2i(target_loc[0] * tile_size + offset, target_loc[1] * tile_size + offset)
+	
+	if target_loc.x != my_loc.x:
+		var direction = target_loc.x - my_loc.x
+		position.x += delta_speed * direction
+		# Going left
+		if facing_direction == LEFT && target_position.x >= position.x:
+			my_loc.x = target_loc.x
+		# Going right
+		elif facing_direction == RIGHT && target_position.x <= position.x:
+			my_loc.x = target_loc.x
+	
+	elif target_loc.y != my_loc.y:
+		var direction = target_loc.y - my_loc.y
+		position.y += delta_speed * direction
+		# Going up
+		if facing_direction == UP && target_position.y >= position.y:
+			my_loc.y = target_loc.y
+		# Going down
+		elif facing_direction == DOWN && target_position.y <= position.y:
+			my_loc.y = target_loc.y
+	
+	elif check_tile_type(my_loc, "Slime") == true:
+			state = SLIDING
+			if facing_direction == DOWN:
+				target_loc.y += 1
+			elif facing_direction == UP:
+				target_loc.y -= 1
+			elif facing_direction == LEFT:
+				target_loc.x -= 1
+			elif facing_direction == RIGHT:
+				target_loc.x += 1
+	
+	else:
+		state = STANDING
+		emit_signal("processing_stopped")
+		if check_tile_type(my_loc, "Key") == true:
+			emit_signal("got_key")
+			clear_tile_of_type(target_loc, "Key")
+		
+		if check_tile_type(my_loc, "ExitDoor") == true:
+			emit_signal("level_complete")
+
 
 # Moves the character during rotations
-func move_to_loc(loc: Vector2i):
-	location = loc
+func instant_move(loc: Vector2i):
+	my_loc = loc
 	target_loc = loc
 	self.position = Vector2(loc.x * tile_size + offset, loc.y * tile_size + offset)

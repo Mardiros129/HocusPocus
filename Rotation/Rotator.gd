@@ -19,18 +19,9 @@ func _ready():
 	emit_signal("get_quadrants", layer_name, self)
 
 func _process(delta):
-	if can_rotate:
-		if Input.is_action_just_pressed("rotate_left"):
-			emit_signal("rotate", quadrant0, quadrant1, quadrant2, quadrant3, false)
-			emit_signal("test", layer_name)
-		elif Input.is_action_just_pressed("rotate_right"):
-			emit_signal("rotate", quadrant0, quadrant1, quadrant2, quadrant3, true)
-			emit_signal("test", layer_name)
-
-func _on_body_entered(body):
-	print("Player entered.")
-	can_rotate = true
-
-func _on_body_exited(body):
-	print("Player exited.")
-	can_rotate = false
+	if Input.is_action_just_pressed("rotate_left"):
+		emit_signal("rotate", quadrant0, quadrant1, quadrant2, quadrant3, false)
+		emit_signal("test", layer_name)
+	elif Input.is_action_just_pressed("rotate_right"):
+		emit_signal("rotate", quadrant0, quadrant1, quadrant2, quadrant3, true)
+		emit_signal("test", layer_name)
