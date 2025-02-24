@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://dqsurrrqxrtqf"]
+[gd_scene load_steps=10 format=3 uid="uid://dqsurrrqxrtqf"]
 
-[ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="1_unfch"]
-[ext_resource type="PackedScene" uid="uid://cq3c2h875hxmb" path="res://character.tscn" id="2_fppg3"]
-[ext_resource type="Script" path="res://Levels/GameWorld.gd" id="3_si6em"]
-[ext_resource type="Texture2D" uid="uid://lhps3jfhyei3" path="res://tilesheet.png" id="3_xc4ki"]
+[ext_resource type="Texture2D" uid="uid://lhps3jfhyei3" path="res://tilesheet.png" id="1_ssaf5"]
+[ext_resource type="PackedScene" uid="uid://cq3c2h875hxmb" path="res://character.tscn" id="2_knc46"]
+[ext_resource type="Texture2D" uid="uid://q5cfqqr73jnw" path="res://tilesheet_complete.png" id="3_v2h3g"]
+[ext_resource type="Script" path="res://LevelManager.gd" id="4_tndwg"]
+[ext_resource type="PackedScene" uid="uid://cxu8nwf2krlkw" path="res://Rotation/rotator.tscn" id="5_hqfdu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4pws3"]
-texture = ExtResource("3_xc4ki")
+texture = ExtResource("1_ssaf5")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -15,10 +16,14 @@ texture_region_size = Vector2i(64, 64)
 0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:1/0/physics_layer_0/angular_velocity = 0.0
 0:1/0/custom_data_1 = true
+0:1/0/custom_data_5 = Vector4i(1, 1, 1, 1)
+0:1/0/custom_data_6 = Vector4i(1, 1, 1, 1)
 1:1/0 = 0
 1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:1/0/physics_layer_0/angular_velocity = 0.0
 1:1/0/custom_data_1 = true
+1:1/0/custom_data_5 = Vector4i(1, 1, 1, 1)
+1:1/0/custom_data_6 = Vector4i(1, 1, 1, 1)
 0:2/0 = 0
 0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:2/0/physics_layer_0/angular_velocity = 0.0
@@ -170,10 +175,10 @@ texture_region_size = Vector2i(64, 64)
 1:7/0/custom_data_6 = Vector4i(1, 0, 0, 0)
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_wc6m3"]
-scenes/3/scene = ExtResource("2_fppg3")
+scenes/3/scene = ExtResource("2_knc46")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ldaek"]
-texture = ExtResource("1_unfch")
+texture = ExtResource("3_v2h3g")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -1005,7 +1010,7 @@ tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
 custom_data_layer_0/name = "Quadrant"
 custom_data_layer_0/type = 2
-custom_data_layer_1/name = "Wall"
+custom_data_layer_1/name = "x_Wall"
 custom_data_layer_1/type = 1
 custom_data_layer_2/name = "ExitDoor"
 custom_data_layer_2/type = 1
@@ -1021,7 +1026,7 @@ sources/1 = SubResource("TileSetScenesCollectionSource_wc6m3")
 sources/99 = SubResource("TileSetAtlasSource_ldaek")
 sources/0 = SubResource("TileSetAtlasSource_4pws3")
 
-[node name="GameWorld" type="TileMap"]
+[node name="LevelManager" type="TileMap"]
 tile_set = SubResource("TileSet_771ys")
 format = 2
 layer_0/name = "Movable"
@@ -1032,11 +1037,20 @@ layer_1/tile_data = PackedInt32Array()
 layer_2/name = "Static"
 layer_2/z_index = 1
 layer_2/tile_data = PackedInt32Array()
-layer_3/name = "Rotator1"
+layer_3/name = "Rotator"
 layer_3/tile_data = PackedInt32Array()
 layer_4/name = "Interactible"
 layer_4/z_index = 2
 layer_4/tile_data = PackedInt32Array()
-script = ExtResource("3_si6em")
+script = ExtResource("4_tndwg")
+character_layer = 1
+static_layer = 2
+rotator_layer = 3
+interactible_layer = 4
+
+[node name="GameWorld" type="Node2D" parent="."]
+
+[node name="Rotator" parent="." instance=ExtResource("5_hqfdu")]
+layer_name = "Rotator"
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]

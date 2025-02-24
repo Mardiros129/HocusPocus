@@ -1,8 +1,14 @@
 extends TileMap
 
 @onready var map_size = -1
+
+# Declare the layers in the GUI
 @export var movable_layer: int
+@export var character_layer: int
+@export var static_layer: int
+@export var rotator_layer: int
 @export var interactible_layer: int
+
 var character
 @export var next_level: PackedScene
 @export var door_locked = true
@@ -18,7 +24,7 @@ func _ready():
 				map_size = all_cells[m][1]
 				
 	map_size += 1
-	#print("Map size is " + str(map_size))
+	print(str(get_layers_count()))
 	
 	var child_nodes = get_children(false)
 	for n in child_nodes.size():
@@ -62,7 +68,6 @@ func generate_rotator_quadrants(rotator):
 	rotator.quadrant3 = quadrant3
 
 
-# ***** Need to refactor later, very icky *****
 func rotate_character(quadrant0: Array[Vector2i], quadrant1: Array, quadrant2: Array, quadrant3: Array, go_right: bool):
 	var char_loc:Vector2i = character.my_loc
 	

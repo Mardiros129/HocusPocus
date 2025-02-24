@@ -1,25 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://dpdcsyvbm48qb"]
+[gd_scene load_steps=4 format=3 uid="uid://dpdcsyvbm48qb"]
 
-[ext_resource type="Script" path="res://Levels/default_map_script.gd" id="1_syy3t"]
-[ext_resource type="PackedScene" uid="uid://dqsurrrqxrtqf" path="res://Levels/game_world.tscn" id="2_2upjt"]
+[ext_resource type="Script" path="res://default_map_script.gd" id="1_syy3t"]
+[ext_resource type="PackedScene" uid="uid://dqsurrrqxrtqf" path="res://level_manager.tscn" id="2_2upjt"]
 [ext_resource type="PackedScene" uid="uid://cxu8nwf2krlkw" path="res://Rotation/rotator.tscn" id="3_s6qug"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_41ymv"]
-size = Vector2(1110.75, 622.5)
 
 [node name="TestMap" type="Node2D"]
 script = ExtResource("1_syy3t")
 
 [node name="GameWorld" parent="." instance=ExtResource("2_2upjt")]
-layer_0/tile_data = PackedInt32Array(327683, 0, 4, 327684, 0, 4, 327685, 0, 4, 327686, 0, 4, 327687, 0, 4, 196610, 131072, 3, 458753, 0, 5, 458754, 65536, 5, 458755, 131072, 5, 458756, 196608, 5, 589825, 0, 6, 589827, 65536, 6, 589829, 131072, 6, 589831, 196608, 6, 524296, 262144, 6, 393224, 327680, 6, 262152, 393216, 6, 262154, 458752, 6, 393226, 524288, 6, 524298, 589824, 6)
+layer_0/tile_data = PackedInt32Array(327683, 0, 4, 327684, 0, 4, 327685, 0, 4, 327686, 0, 4, 327687, 0, 4, 458753, 0, 5, 458754, 65536, 5, 458755, 131072, 5, 458756, 196608, 5, 589825, 0, 6, 589827, 65536, 6, 589829, 131072, 6, 589831, 196608, 6, 524296, 262144, 6, 393224, 327680, 6, 262152, 393216, 6, 262154, 458752, 6, 393226, 524288, 6, 524298, 589824, 6)
 layer_1/name = "Units"
-layer_1/tile_data = PackedInt32Array(327682, 1, 196608, 327685, 131072, 3)
+layer_1/tile_data = PackedInt32Array(327682, 1, 196608)
 layer_3/tile_data = PackedInt32Array(131077, 65536, 2, 196613, 65536, 2, 262149, 131072, 2, 327685, 131072, 2, 393221, 131072, 2, 131078, 65536, 2, 196614, 65536, 2, 262150, 131072, 2, 327686, 131072, 2, 393222, 131072, 2, 65537, 0, 2, 131073, 0, 2, 196609, 0, 2, 262145, 196608, 2, 327681, 196608, 2, 393217, 196608, 2, 65538, 0, 2, 131074, 0, 2, 196610, 0, 2, 262146, 196608, 2, 327682, 196608, 2, 393218, 196608, 2, 65539, 0, 2, 131075, 0, 2, 196611, 0, 2, 262147, 196608, 2, 327683, 196608, 2, 393219, 196608, 2, 65540, 65536, 2, 131076, 65536, 2, 196612, 65536, 2, 262148, 131072, 2, 327684, 131072, 2, 393220, 131072, 2, 65541, 65536, 2, 65542, 65536, 2)
+layer_4/tile_data = PackedInt32Array(327685, 131072, 3, 196610, 131072, 3)
 
-[node name="Rotator" parent="GameWorld" instance=ExtResource("3_s6qug")]
-
-[node name="CollisionShape2D" parent="GameWorld/Rotator" index="0"]
-position = Vector2(574.625, 324.75)
-shape = SubResource("RectangleShape2D_41ymv")
-
-[editable path="GameWorld/Rotator"]
+[node name="Rotator2" parent="GameWorld" instance=ExtResource("3_s6qug")]

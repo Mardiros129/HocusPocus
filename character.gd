@@ -84,8 +84,8 @@ func _input(event):
 
 
 func check_can_move(destination_tile):
-	if check_tile_type(destination_tile, "Wall") == true:
-		return false
+	#if check_tile_type(destination_tile, "Wall") == true:
+		#return false
 	for n in game_world.get_layers_count():
 		var temp_destination_tile = game_world.get_cell_tile_data(n, destination_tile, false)
 		var temp_location_tile = game_world.get_cell_tile_data(n, my_loc, false)
