@@ -13,6 +13,8 @@ extends CharacterBody2D
 
 @onready var anim_player = $Sprite2D/AnimationPlayer
 
+@onready var has_key = false
+
 signal level_complete
 signal got_key
 signal processing_started
@@ -84,30 +86,28 @@ func _input(event):
 
 
 func check_can_move(destination_tile):
-	#if check_tile_type(destination_tile, "Wall") == true:
-		#return false
 	for n in game_world.get_layers_count():
 		var temp_destination_tile = game_world.get_cell_tile_data(n, destination_tile, false)
 		var temp_location_tile = game_world.get_cell_tile_data(n, my_loc, false)
 		
 		if temp_location_tile != null:
-			if temp_location_tile.get_custom_data("Barrier").x == 1 && facing_direction == UP:
+			if temp_location_tile.get_custom_data("Wall").x == 1 && facing_direction == UP:
 				return false
-			elif temp_location_tile.get_custom_data("Barrier").y == 1 && facing_direction == RIGHT:
+			elif temp_location_tile.get_custom_data("Wall").y == 1 && facing_direction == RIGHT:
 				return false
-			elif temp_location_tile.get_custom_data("Barrier").z == 1 && facing_direction == DOWN:
+			elif temp_location_tile.get_custom_data("Wall").z == 1 && facing_direction == DOWN:
 				return false
-			elif temp_location_tile.get_custom_data("Barrier").w == 1 && facing_direction == LEFT:
+			elif temp_location_tile.get_custom_data("Wall").w == 1 && facing_direction == LEFT:
 				return false
 		
 		if temp_destination_tile != null:
-			if temp_destination_tile.get_custom_data("Barrier").x == 1 && facing_direction == DOWN:
+			if temp_destination_tile.get_custom_data("Wall").x == 1 && facing_direction == DOWN:
 				return false
-			elif temp_destination_tile.get_custom_data("Barrier").y == 1 && facing_direction == LEFT:
+			elif temp_destination_tile.get_custom_data("Wall").y == 1 && facing_direction == LEFT:
 				return false
-			elif temp_destination_tile.get_custom_data("Barrier").z == 1 && facing_direction == UP:
+			elif temp_destination_tile.get_custom_data("Wall").z == 1 && facing_direction == UP:
 				return false
-			elif temp_destination_tile.get_custom_data("Barrier").w == 1 && facing_direction == RIGHT:
+			elif temp_destination_tile.get_custom_data("Wall").w == 1 && facing_direction == RIGHT:
 				return false
 				
 			if temp_destination_tile.get_custom_data("Cliff").x == 1 && facing_direction == DOWN:
