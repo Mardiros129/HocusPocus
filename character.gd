@@ -121,13 +121,15 @@ func check_can_move(destination_tile):
 
 
 func check_tile_type(tile_location, type):
+	var is_type = false
+	
 	for n in game_world.get_layers_count():
 		var my_tile = game_world.get_cell_tile_data(n, tile_location, false)
 		if my_tile != null:
 			if my_tile.get_custom_data(type) == true:
-				return true
-		else:
-			return false
+				is_type = true
+	
+	return is_type
 
 
 func clear_tile_of_type(tile_location, type):
